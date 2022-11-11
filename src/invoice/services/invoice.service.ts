@@ -80,6 +80,15 @@ export class InvoiceService {
           return invoice;
     }
 
+    updateInvoice(id: string, invoiceDto: InvoiceDto) {
+      const invoice = this.findById(id);
+      if (invoice) {
+        const index = this.invoices.findIndex((invoiceData) => id.includes(invoiceData.id));
+        this.invoices[index] = {id, ...invoice, ...invoiceDto};
+        return this.invoices[index]
+      }
+    }
+
     deleteInvoice(id: string): boolean {
       const invoice = this.findById(id);
         let valid = false;
