@@ -84,23 +84,17 @@ export class InvoiceService {
       const invoice = this.findById(id);
       if (invoice) {
         const index = this.invoices.findIndex((invoiceData) => id.includes(invoiceData.id));
-        this.invoices[index] = {id, ...invoice, ...invoiceDto};
+        this.invoices[index] = {...invoice, ...invoiceDto};
         return this.invoices[index]
       }
     }
 
     deleteInvoice(id: string): boolean {
-      const invoice = this.findById(id);
-        let valid = false;
-        if (invoice) {
-          this.invoices.forEach((invoiceData, i) => {
-            if (invoice?.id === invoiceData?.id) {
-              this.invoices.splice(i, 1)
-              valid = true;
-            }
-          })
-        } else valid = false;
-    
-        return valid;
+      const index = this.invoices.findIndex((invoice) => id.includes(invoice.id));
+      if (index == -1) {
+        throw new NotFoundException(`No pudo encontrarse la factura con id: ${id}`)
+      }
+      this.invoices.splice(index, 1)
+      return true;
     }
 }
