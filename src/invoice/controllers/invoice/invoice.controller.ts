@@ -1,4 +1,23 @@
-import { Controller } from '@nestjs/common';
+import {Controller, Param, Get, Post, Body, Patch, Put, Delete,} from '@nestjs/common';
+import { InvoiceService } from '../../services/invoice.service';
+import { InvoiceDto } from '../../dto/invoice.dto/invoice.dto';
 
 @Controller('invoice')
-export class InvoiceController {}
+export class InvoiceController {
+    constructor(private readonly invoiceService: InvoiceService){}
+
+    @Get()
+    getAll(){
+        return this.invoiceService.getAll()
+    }
+
+    @Get(':id')
+    findById(@Param('id') id: string) {
+        return this.invoiceService.findById(id);
+    }
+
+    @Post()
+    createInvoice(@Body() invoiceDto: InvoiceDto) {
+        return this.invoiceService.createInvoice(invoiceDto);
+    }
+}
