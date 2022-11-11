@@ -1,6 +1,7 @@
 import { ICustomer } from '../../interface/Icustomer.interface';
 import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { v4 as uuid } from 'uuid';
+import { PartialType } from '@nestjs/swagger'
 
 export class CustomerDto implements ICustomer {
     @IsUUID()
@@ -26,3 +27,5 @@ export class CustomerDto implements ICustomer {
         this.age = customer?.age ?? 0;
     }
 }
+
+export class UpdateCustomerDto extends PartialType(CustomerDto){}

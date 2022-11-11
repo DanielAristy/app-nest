@@ -1,7 +1,8 @@
 import { InvoiceDetail } from './../../interface/invoice-detail.interface';
 import { IsNotEmpty, IsNumber, IsString, MinLength, IsUUID, IsOptional } from 'class-validator';
 import { v4 as uuid } from 'uuid';
-export class InvoiceDetailDto implements InvoiceDetail {
+import { PartialType } from '@nestjs/swagger'
+export class InvoiceDetailDto  implements InvoiceDetail {
     @IsUUID()
     @IsOptional()
     readonly id?: string = uuid();
@@ -16,3 +17,5 @@ export class InvoiceDetailDto implements InvoiceDetail {
     @IsNumber()
     readonly quantity: number;
 }
+
+export class UpdateInvoiceDetailDto extends PartialType(InvoiceDetailDto){}
