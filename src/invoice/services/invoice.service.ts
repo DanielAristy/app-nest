@@ -79,4 +79,19 @@ export class InvoiceService {
           this.invoices.push(invoice);
           return invoice;
     }
+
+    deleteInvoice(id: string): boolean {
+      const invoice = this.findById(id);
+        let valid = false;
+        if (invoice) {
+          this.invoices.forEach((invoiceData, i) => {
+            if (invoice?.id === invoiceData?.id) {
+              this.invoices.splice(i, 1)
+              valid = true;
+            }
+          })
+        } else valid = false;
+    
+        return valid;
+    }
 }
