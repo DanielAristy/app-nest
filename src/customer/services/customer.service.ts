@@ -48,36 +48,28 @@ export class CustomerService {
         }
         this.customers.push(newCustomer);
         return newCustomer;
-      }
+    }
     
-      updateUser(id: string, userDto: CustomerDto){
-        let updateCustomer = this.findById(id);
-        this.customers = this.customers.map(user => {
-          if (id.includes(user?.id ?? '')) {
-            updateCustomer = {...updateCustomer, ...userDto, id };
-            return updateCustomer;
-          }
-          return user;
-        })
-        return updateCustomer;
+    updateUser(id: string, userDto: CustomerDto){
+      const updateCustomer = this.findById(id);
+      if (updateCustomer) {
+        const index = this.customers.findIndex((customerData) => id.includes(customerData.id));
+        this.customers[index] = {... updateCustomer, ...userDto};
+        return this.customers[index];
       }
+    }
     
-      modifyUser(id: string, customerDto: CustomerDto){
-        return this.updateUser(id, customerDto)
+    modifyUser(id: string, customerDto: CustomerDto){
+      return this.updateUser(id, customerDto)
+    }
+    
+    deleteUser(id: string): boolean {
+      const index = this.customers.findIndex((customer) => id.includes(customer.id));
+      if (index == -1) {
+        throw new NotFoundException(`No pudo encontrarse el cliente con id: ${id}`)
       }
-    
-      deleteUser(id: string): boolean { 
-        const customer = this.findById(id);
-        let valid = false;
-        if (customer) {
-          this.customers.forEach((customerData, i) => {
-            if (customer?.id === customerData?.id) {
-              this.customers.splice(i, 1)
-              valid = true;
-            }
-          })
-        } else valid = false;
-    
-        return valid;
-      }
+      this.customers.splice(index, 1)
+      return true;
+    }
 }
+
